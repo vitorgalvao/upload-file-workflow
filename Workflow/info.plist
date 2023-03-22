@@ -198,7 +198,7 @@ Upload files and folders via the [Universal Action](https://www.alfredapp.com/he
 
 ![Upload file](images/about/ua.png)
 
-When done, the download link is copied to the clipboard. Check upload progress via the Progress Keyword (default: `ufp`).
+When done, the download link is copied to the clipboard. Check upload progress via the `ufp` keyword.
 
 ![Upload progress](images/about/ufp.png)
 
@@ -304,8 +304,6 @@ Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
 			<string>progress_keyword</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>2022.1</string>
 	<key>webaddress</key>
