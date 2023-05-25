@@ -67,7 +67,7 @@ function transfer {
   echo -n "${file_name}" > "${name_file}"
   notification "Uploading “${file_name}”"
 
-  local -r hosts=('transfer.sh' '0x0.st' 'litterbox.catbox.moe' 'bashupload.com' 'bayfiles.com' 'anonfile.com' 'megaupload.is' 'forumfiles.com')
+  local -r hosts=('0x0.st' 'litterbox.catbox.moe' 'transfer.archivete.am' 'free.keep.sh' 'oshi.at' 'bayfiles.com' 'anonfile.com' 'rapidshare.nu' 'forumfiles.com')
   local -r default_host="${hosts[0]}"
 
   if [[ -n "${upload_file_to}" ]]; then
@@ -81,14 +81,16 @@ function transfer {
     local -r upload_host="${default_host}"
   fi
 
-  if [[ "${upload_host}" == *'transfer.sh' ]]; then
-    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}/" 2> "${progress_file}" | tr -d '\n' | pbcopy
-  elif [[ "${upload_host}" == '0x0.st' ]]; then
+  if [[ "${upload_host}" == '0x0.st' ]]; then
     curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
   elif [[ "${upload_host}" == 'litterbox.catbox.moe' ]]; then
     curl --globoff --progress-bar --form 'reqtype=fileupload' --form 'time=72h' --form "fileToUpload=@\"${escaped_file_path}\"" "https://${upload_host}/resources/internals/api.php" 2> "${progress_file}" | tr -d '\n' | pbcopy
-  elif [[ "${upload_host}" == *'bashupload.com' ]]; then
-    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}/" 2> "${progress_file}" | grep '^wget' | sed 's/^wget //' | tr -d '\n' | pbcopy
+  elif [[ "${upload_host}" == 'transfer.archivete.am' ]]; then
+    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
+  elif [[ "${upload_host}" == 'free.keep.sh' ]]; then
+    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
+  elif [[ "${upload_host}" == 'oshi.at' ]]; then
+    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | grep ' \[Download\]' | sed 's/ \[Download\].*//' | tr -d '\n' | pbcopy
   else
     curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://api.${upload_host}/upload" 2> "${progress_file}" | kopimi_parse | tr -d '\n' | pbcopy
   fi

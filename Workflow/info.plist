@@ -240,14 +240,10 @@ Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<string>transfer.sh</string>
+				<string>transfer.archivete.am</string>
 				<key>pairs</key>
 				<array>
 					<array>
-						<string>transfer.sh</string>
-						<string>transfer.sh</string>
-					</array>
-					<array>
 						<string>0x0.st</string>
 						<string>0x0.st</string>
 					</array>
@@ -256,8 +252,16 @@ Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
 						<string>litterbox.catbox.moe</string>
 					</array>
 					<array>
-						<string>bashupload.com</string>
-						<string>bashupload.com</string>
+						<string>transfer.archivete.am</string>
+						<string>transfer.archivete.am</string>
+					</array>
+					<array>
+						<string>free.keep.sh</string>
+						<string>free.keep.sh</string>
+					</array>
+					<array>
+						<string>oshi.at</string>
+						<string>oshi.at</string>
 					</array>
 					<array>
 						<string>bayfiles.com</string>
@@ -268,8 +272,8 @@ Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
 						<string>anonfile.com</string>
 					</array>
 					<array>
-						<string>megaupload.is</string>
-						<string>megaupload.is</string>
+						<string>rapidshare.nu</string>
+						<string>rapidshare.nu</string>
 					</array>
 					<array>
 						<string>forumfiles.com</string>
