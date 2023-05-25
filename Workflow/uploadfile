@@ -28,6 +28,16 @@ function is_string_in_array {
   return 1
 }
 
+function kopimi_parse {
+  local -r json="$(< /dev/stdin)"
+
+  osascript -l JavaScript -e 'function run(argv) {
+    const data = JSON.parse(argv[0])
+    if (!data["status"]) { return "There was an error uploading" }
+    return data["data"]["file"]["url"]["full"]
+  }' "${json}"
+}
+
 function transfer {
   # Consolidate files bit
   # If acting on multiple files or a software bundle, first copy them to a directory
@@ -80,7 +90,7 @@ function transfer {
   elif [[ "${upload_host}" == *'bashupload.com' ]]; then
     curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}/" 2> "${progress_file}" | grep '^wget' | sed 's/^wget //' | tr -d '\n' | pbcopy
   else
-    curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://api.${upload_host}/upload" 2> "${progress_file}" | ruby -r 'json' -e 'data = JSON.parse(gets); abort "There was an error uploading" if data["status"] == false; puts data["data"]["file"]["url"]["full"]' | tr -d '\n' | pbcopy
+    curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://api.${upload_host}/upload" 2> "${progress_file}" | kopimi_parse | tr -d '\n' | pbcopy
   fi
 
   # Play sound and show message
