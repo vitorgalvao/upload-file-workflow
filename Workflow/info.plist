@@ -204,7 +204,7 @@ When done, the download link is copied to the clipboard. Check upload progress v
 
 ![Upload progress](images/about/ufp.png)
 
-Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
+* &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Cancel upload.</string>
 	<key>uidata</key>
 	<dict>
 		<key>3444071E-B0B8-4C12-9699-210912A13E67</key>
@@ -262,32 +262,8 @@ Press &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; to cancel.</string>
 						<string>transfer.archivete.am</string>
 					</array>
 					<array>
-						<string>pixeldrain.com</string>
-						<string>pixeldrain.com</string>
-					</array>
-					<array>
-						<string>free.keep.sh</string>
-						<string>free.keep.sh</string>
-					</array>
-					<array>
 						<string>oshi.at</string>
 						<string>oshi.at</string>
-					</array>
-					<array>
-						<string>bayfiles.com</string>
-						<string>bayfiles.com</string>
-					</array>
-					<array>
-						<string>anonfile.com</string>
-						<string>anonfile.com</string>
-					</array>
-					<array>
-						<string>rapidshare.nu</string>
-						<string>rapidshare.nu</string>
-					</array>
-					<array>
-						<string>forumfiles.com</string>
-						<string>forumfiles.com</string>
 					</array>
 				</array>
 			</dict>
