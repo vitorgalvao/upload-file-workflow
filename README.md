@@ -14,4 +14,4 @@ When done, the download link is copied to the clipboard. Check upload progress v
 
 ![Upload progress](Workflow/images/about/ufp.png)
 
-Press <kbd>⌘</kbd><kbd>↩&#xFE0E;</kbd> to cancel.
+* <kbd>⌘</kbd><kbd>↩&#xFE0E;</kbd> Cancel upload.
