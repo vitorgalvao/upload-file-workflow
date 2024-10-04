@@ -57,7 +57,7 @@ function transfer {
   echo -n "${file_name}" > "${name_file}"
   notification "Uploading “${file_name}”"
 
-  local -r hosts=('0x0.st' 'litterbox.catbox.moe' 'transfer.sh' 'transfer.archivete.am' 'pixeldrain.com' 'free.keep.sh' 'oshi.at' 'bayfiles.com' 'anonfile.com' 'rapidshare.nu' 'forumfiles.com')
+  local -r hosts=('0x0.st' 'litterbox.catbox.moe' 'transfer.sh' 'transfer.archivete.am' 'filebin.net' 'oshi.at')
   local -r default_host="${hosts[0]}"
 
   if [[ -n "${upload_file_to}" ]]; then
@@ -79,6 +79,10 @@ function transfer {
     curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
   elif [[ "${upload_host}" == 'transfer.archivete.am' ]]; then
     curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
+  elif [[ "${upload_host}" == 'filebin.net' ]]; then
+    readonly url="https://${upload_host}/$(uuidgen)/$(uuidgen)"
+    curl --globoff --progress-bar --request 'POST' "${url}" --data-binary "@${file_path}" --output /dev/null 2> "${progress_file}"
+    pbcopy <<< "${url}"
   elif [[ "${upload_host}" == 'oshi.at' ]]; then
     curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | grep ' \[Download\]' | sed 's/ \[Download\].*//' | tr -d '\n' | pbcopy
   fi
