@@ -57,7 +57,7 @@ function transfer {
   echo -n "${file_name}" > "${name_file}"
   notification "Uploading “${file_name}”"
 
-  local -r hosts=('0x0.st' 'litterbox.catbox.moe' 'transfer.sh' 'transfer.archivete.am' 'filebin.net' 'oshi.at')
+  local -r hosts=('0x0.st' 'litterbox.catbox.moe' 'transfer.archivete.am' 'filebin.net' 'oshi.at')
   local -r default_host="${hosts[0]}"
 
   if [[ -n "${upload_file_to}" ]]; then
@@ -75,8 +75,6 @@ function transfer {
     curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
   elif [[ "${upload_host}" == 'litterbox.catbox.moe' ]]; then
     curl --globoff --progress-bar --form 'reqtype=fileupload' --form 'time=72h' --form "fileToUpload=@\"${escaped_file_path}\"" "https://${upload_host}/resources/internals/api.php" 2> "${progress_file}" | tr -d '\n' | pbcopy
-  elif [[ "${upload_host}" == 'transfer.sh' ]]; then
-    curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
   elif [[ "${upload_host}" == 'transfer.archivete.am' ]]; then
     curl --globoff --progress-bar --upload-file "${file_path}" "https://${upload_host}" 2> "${progress_file}" | tr -d '\n' | pbcopy
   elif [[ "${upload_host}" == 'filebin.net' ]]; then

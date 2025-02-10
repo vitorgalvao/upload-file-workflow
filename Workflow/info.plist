@@ -53,8 +53,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>echo "${1}" &gt;&amp;2
-./uploadfile upload "${@}"</string>
+				<string>./uploadfile upload "${@}"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -252,10 +251,6 @@ When done, the download link is copied to the clipboard. Check upload progress v
 					<array>
 						<string>litterbox.catbox.moe</string>
 						<string>litterbox.catbox.moe</string>
-					</array>
-					<array>
-						<string>transfer.sh</string>
-						<string>transfer.sh</string>
 					</array>
 					<array>
 						<string>transfer.archivete.am</string>
