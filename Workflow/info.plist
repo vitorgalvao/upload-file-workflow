@@ -6,8 +6,6 @@
 	<string>com.vitorgalvao.alfred.uploadfile</string>
 	<key>connections</key>
 	<dict>
-		<key>3444071E-B0B8-4C12-9699-210912A13E67</key>
-		<array/>
 		<key>A697CADF-6E4A-4C9D-8D61-A8BFCE2DACA4</key>
 		<array>
 			<dict>
@@ -25,7 +23,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>3444071E-B0B8-4C12-9699-210912A13E67</string>
+				<string>801048A8-20A2-41F0-B40D-1A4D375AC1D8</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -53,7 +51,48 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./uploadfile upload "${@}"</string>
+				<string># Helpers
+function notification {
+  ./notificator --message "${1}" --title "${alfred_workflow_name}"
+}
+
+# Save input file information for display
+name_array=()
+
+for filepath in "${@}"
+do
+  name_array+=("$(basename "${filepath}")")
+done
+
+readonly name_list="${(j:, :)name_array}"
+unset name_array
+
+# Files to write progress information
+readonly progress_file="${alfred_workflow_cache}/progress.txt"
+readonly name_file="${alfred_workflow_cache}/name.txt"
+
+# Ensure cache folder and cleanup on exit
+mkdir -p "${alfred_workflow_cache}"
+trap 'rm "${progress_file}" "${name_file}"' EXIT
+
+# Show notification to start and write initial information
+notification "${name_list}"
+printf '%s' "${name_list}" &gt; "${name_file}"
+
+# Upload, saving the result for display and redirecting progress
+# Show output message and sound accordingly
+if ./upload-file \
+  --upload-host "${upload_file_to}" \
+  --dummy-text 'uploadfile_process_anchor' \
+  "${@}" 2&gt; "${progress_file}"
+then
+  afplay /System/Library/Sounds/Ping.aiff
+  notification 'Copied URL to clipboard'
+else
+  afplay /System/Library/Sounds/Funk.aiff
+  notification 'Upload Failed'
+  exit
+fi</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -64,7 +103,7 @@
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>3444071E-B0B8-4C12-9699-210912A13E67</string>
+			<string>801048A8-20A2-41F0-B40D-1A4D375AC1D8</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
@@ -93,7 +132,18 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>script</key>
-				<string>./uploadfile abort</string>
+				<string>function notification {
+  ./notificator --message "${1}" --title "${alfred_workflow_name}"
+}
+
+# Kill process tree to stop upload and prevent notification from showing success
+readonly process="$(pgrep -nf 'uploadfile_process_anchor')"
+readonly process_groud_id="$(ps -o pgid= "${process}")"
+kill -- "-${process_groud_id}"
+
+# Play sound and show message
+afplay /System/Library/Sounds/Funk.aiff
+notification 'Upload canceled'</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -136,39 +186,56 @@
 				<key>runningsubtext</key>
 				<string>Please wait…</string>
 				<key>script</key>
-				<string>require 'json'
-require 'pathname'
+				<string>// Helpers
+function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
 
-Progress_file = Pathname.new(ENV['alfred_workflow_cache']).join('progress.txt')
-Name_file = Pathname.new(ENV['alfred_workflow_cache']).join('name.txt')
+function readFile(path) {
+  return $.NSString.stringWithContentsOfFileEncodingError(
+    path, $.NSUTF8StringEncoding, undefined).js
+}
 
-Script_filter_content = lambda {
-  if Progress_file.exist?
-    filename = Name_file.readlines.first
-    progress = Progress_file.readlines.first.sub(/.*\s/, '')
+function activeProcess(anchor) {
+  const task = $.NSTask.alloc.init
 
-    return {
-      rerun: 1,
-      items: [
-        title: "#{ENV['alfred_workflow_name']} Progress",
-        subtitle: "#{progress} / #{filename}",
-        valid: false,
-        mods: { cmd: { valid: true } }
-      ]
-    }
-  end
+  task.executableURL = $.NSURL.fileURLWithPath("/usr/bin/pgrep")
+  task.arguments = ["-qf", anchor]
+  task.launchAndReturnError(false)
 
-  {
+  task.waitUntilExit
+  return task.terminationStatus === 0
+}
+
+// Main
+function run() {
+  if (!activeProcess("uploadfile_process_anchor")) return JSON.stringify({
     rerun: 1,
-    items: [
-      title: 'No Upload in Progress',
-      subtitle: 'Will auto-refresh if an upload starts',
+    items: [{
+      title: "No Upload in Progress",
+      subtitle: "Will auto-refresh if an upload starts",
       valid: false
-    ]
-  }
-}.call
+    }]
+  })
 
-puts(Script_filter_content.to_json)</string>
+  const cacheDir = $(envVar("alfred_workflow_cache"))
+  const fileName = readFile(cacheDir.stringByAppendingPathComponent("name.txt").js)
+  const progress = readFile(cacheDir.stringByAppendingPathComponent("progress.txt").js)
+    .split(" ").slice(-1)
+
+  return JSON.stringify({
+    rerun: 1,
+    items: [{
+      title: `${envVar("alfred_workflow_name")} Progress`,
+      subtitle: `${progress} · ${fileName}`,
+      valid: false,
+      mods: { cmd: { valid: true } }
+    }]
+  })
+}</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -180,7 +247,7 @@ puts(Script_filter_content.to_json)</string>
 				<key>title</key>
 				<string>UploadFile Progress</string>
 				<key>type</key>
-				<integer>2</integer>
+				<integer>7</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -195,7 +262,7 @@ puts(Script_filter_content.to_json)</string>
 	<key>readme</key>
 	<string>## Usage
 
-Upload files and folders via the [Universal Action](https://www.alfredapp.com/help/features/universal-actions/). Folders and multiple files will are zipped prior to upload.
+Upload files and folders via the [Universal Action](https://www.alfredapp.com/help/features/universal-actions/). Folders and multiple files are zipped prior to upload.
 
 ![Upload file](images/about/ua.png)
 
@@ -206,19 +273,19 @@ When done, the download link is copied to the clipboard. Check upload progress v
 * &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Cancel upload.</string>
 	<key>uidata</key>
 	<dict>
-		<key>3444071E-B0B8-4C12-9699-210912A13E67</key>
-		<dict>
-			<key>xpos</key>
-			<real>435</real>
-			<key>ypos</key>
-			<real>25</real>
-		</dict>
 		<key>55E5D2C8-6F1C-416A-B7D8-C27393CF7485</key>
 		<dict>
 			<key>xpos</key>
 			<real>435</real>
 			<key>ypos</key>
 			<real>145</real>
+		</dict>
+		<key>801048A8-20A2-41F0-B40D-1A4D375AC1D8</key>
+		<dict>
+			<key>xpos</key>
+			<real>435</real>
+			<key>ypos</key>
+			<real>25</real>
 		</dict>
 		<key>A697CADF-6E4A-4C9D-8D61-A8BFCE2DACA4</key>
 		<dict>
