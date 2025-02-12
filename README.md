@@ -6,7 +6,7 @@ Upload files and folders for easy sharing
 
 ## Usage
 
-Upload files and folders via the [Universal Action](https://www.alfredapp.com/help/features/universal-actions/). Folders and multiple files will are zipped prior to upload.
+Upload files and folders via the [Universal Action](https://www.alfredapp.com/help/features/universal-actions/). Folders and multiple files are zipped prior to upload.
 
 ![Upload file](Workflow/images/about/ua.png)
 
