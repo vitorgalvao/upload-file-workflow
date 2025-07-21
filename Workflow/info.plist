@@ -327,10 +327,6 @@ When done, the download link is copied to the clipboard. Check upload progress v
 						<string>filebin.net</string>
 						<string>filebin.net</string>
 					</array>
-					<array>
-						<string>oshi.at</string>
-						<string>oshi.at</string>
-					</array>
 				</array>
 			</dict>
 			<key>description</key>
