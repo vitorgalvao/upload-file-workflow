@@ -324,6 +324,10 @@ When done, the download link is copied to the clipboard. Check upload progress v
 						<string>transfer.archivete.am</string>
 					</array>
 					<array>
+						<string>xfer.reliable.network</string>
+						<string>xfer.reliable.network</string>
+					</array>
+					<array>
 						<string>filebin.net</string>
 						<string>filebin.net</string>
 					</array>
