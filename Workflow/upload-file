@@ -123,7 +123,7 @@ else
 fi
 
 if [[ "${upload_host}" == '0x0.st' ]]; then
-  readonly url="$(curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://${upload_host}")"
+  readonly url="$(curl --globoff --progress-bar --form "file=@\"${escaped_file_path}\"" "https://${upload_host}" --user-agent 'Upload File/Script/Alfred Workflow')"
 elif [[ "${upload_host}" == 'litterbox.catbox.moe' ]]; then
   readonly url="$(curl --globoff --progress-bar --form 'reqtype=fileupload' --form 'time=72h' --form "fileToUpload=@\"${escaped_file_path}\"" "https://${upload_host}/resources/internals/api.php")"
 elif [[ "${upload_host}" == 'transfer.archivete.am' ]]; then
