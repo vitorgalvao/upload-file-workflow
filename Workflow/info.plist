@@ -361,7 +361,7 @@ When done, the download link is copied to the clipboard. Check upload progress v
 		</dict>
 	</array>
 	<key>version</key>
-	<string>25.3</string>
+	<string>25.4</string>
 	<key>webaddress</key>
 	<string>https://github.com/vitorgalvao/upload-file-workflow/</string>
 </dict>
